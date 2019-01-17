@@ -8,11 +8,13 @@ import Favourites from '../../components/Favourites';
 import isEmptyOrSpaces from '../../lib/isEmptyOrSpaces';
 import NoData from '../../components/NoData';
 import Page from '../../components/Page';
+import useLocalStorage from '../../lib/useLocalStorage';
+import { LOCAL_STORAGE_KEY } from '../../config';
 
 export default function App() {
   const [items, setAllItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
-  const [favouritedItems, setFavouritedItems] = useState([]);
+  const [favouritedItems, setFavouritedItems] = useLocalStorage(LOCAL_STORAGE_KEY, []);
 
   async function getItems() {
     const response = await fetch(API_URL);
