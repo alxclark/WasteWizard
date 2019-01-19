@@ -128,7 +128,7 @@ const DropdownItem = styled.div`
   box-sizing: border-box;
 
   &.highlighted {
-    background: #25985c;
+    background: ${props => props.theme.colors.primary};
     color: white;
   }
 `
@@ -146,7 +146,7 @@ const StyledSearch = styled.div`
       box-sizing: border-box;
       margin-top: 1rem;
       border-radius: 3px;
-      border: 1px solid #b4b4b4;
+      border: 1px solid ${props => props.theme.colors.gray};
     }
   }
 `
