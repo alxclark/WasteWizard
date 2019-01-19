@@ -13,13 +13,27 @@ import { LOCAL_STORAGE_KEY } from '../../config';
 
 export default function App() {
   const [items, setAllItems] = useState([]);
+  const [keywords, setKeywords] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [favouritedItems, setFavouritedItems] = useLocalStorage(LOCAL_STORAGE_KEY, []);
+
 
   async function getItems() {
     const response = await fetch(API_URL);
     const json = await response.json();
     setAllItems(json);
+    getAllKeyWords(json);
+  }
+
+  function getAllKeyWords(allItems) {
+    const keywordsObject = {};
+    allItems.forEach(item => {
+      const newKeywords = item.keywords.toLowerCase().split(', ');
+      newKeywords.forEach((keyword) => {
+        keywordsObject[keyword] = '';
+      });
+    });
+    setKeywords(Object.keys(keywordsObject));
   }
 
   function handleSearch(queryString) {
@@ -29,7 +43,7 @@ export default function App() {
       const query = queryString.toLowerCase();
       const filteredItems = items.filter((item) => {
         const keywords = item.keywords.toLowerCase().split(', ');
-        const queryMatchesKeyword = keywords.some(keyword => keyword.includes(query))
+        const queryMatchesKeyword = keywords.some(keyword => keyword.includes(query));
         return queryMatchesKeyword;
       });
       setSelectedItems(filteredItems);
@@ -69,7 +83,10 @@ export default function App() {
     <Page>
       <Banner />
       <Wrapper>
-        <Search handleSearch={handleSearch} resetResults={handleResetResults} />
+        <Search
+          handleSearch={handleSearch}
+          resetResults={handleResetResults}
+          allKeywords={keywords} />
         <ItemList
           items={selectedItems}
           favourites={favouritedItems}
